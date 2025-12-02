@@ -1,0 +1,33 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+  <Dialog
+    id="selectDialog04"
+    title="Select Items"
+    draggable="true"
+    resizable="true"
+    afterClose="onDialogAfterClose04"
+  >
+    <VBox>
+      <SearchField
+        id="searchField04"
+        liveChange="onSearch04"
+        placeholder="Search..."
+      />
+      <List
+        id="itemList04"
+        mode="MultiSelect"  
+        growing="true"
+        items="{/ZEHS_I_LOC_REF}"
+        selectionChange="onSelectionChange04"
+      >
+        <StandardListItem
+          title="{text}"
+        />
+      </List>
+    </VBox>
+
+    <buttons>
+      <Button text="Cancel" press="onCancel04" />
+      <Button text="OK" press="onConfirm04" />
+    </buttons>
+  </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,24 @@
+{
+  "generationParameters": {
+    "generationDate": "Sun Nov 16 2025 12:29:44 GMT+0000 (Coordinated Universal Time)",
+    "generatorPlatform": "SAP Business Application Studio",
+    "serviceType": "SAP System (ABAP On-Premise)",
+    "metadataFilename": "",
+    "serviceUrl": "https://bas_dest_osd.dest/sap/opu/odata/sap/ZEHS_SAFETY_RISK_SRV",
+    "appName": "zehs_safty_v2",
+    "appTitle": "Environmental Aspects",
+    "appDescription": "An SAP Fiori application.",
+    "appNamespace": "com.ehs",
+    "ui5Theme": "sap_horizon",
+    "ui5Version": "1.120.21",
+    "enableCodeAssist": false,
+    "enableEslint": false,
+    "enableTypeScript": false,
+    "showMockDataInfo": true,
+    "generatorVersion": "1.19.5",
+    "template": "Basic V2",
+    "generatorName": "SAP Fiori Application Generator",
+    "entityRelatedConfig": [],
+    "launchText": "To launch the generated application, run the following from the generated application root folder:\n\n```\n    npm start\n```"
+  }
+}

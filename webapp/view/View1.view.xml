@@ -1,0 +1,481 @@
+<mvc:View
+    controllerName="com.ehs.zehssaftyv2.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:op="sap.uxap"
+    xmlns:table="sap.ui.table"
+    height="100%"
+    displayBlock="true"
+>
+    <op:ObjectPageLayout
+        id="objectPage"
+        showFooter="false"
+        showHeaderContent="false"
+        useIconTabBar="true"
+        upperCaseAnchorBar="false"
+        height="100%"
+        enableLazyLoading="true"
+        preserveHeaderStateOnScroll="false"
+    >
+        <op:headerTitle>
+            <op:ObjectPageDynamicHeaderTitle>
+                <op:expandedHeading>
+                    <Title
+                        text="{i18n>title}"
+                        wrapping="true"
+                    />
+                </op:expandedHeading>
+            </op:ObjectPageDynamicHeaderTitle>
+        </op:headerTitle>
+
+        <op:sections>
+            <!-- TAB 1: HIRA (becomes IconTabFilter automatically) -->
+            <op:ObjectPageSection id="sectionSafety" title="HIRA" importance="High">
+                <op:subSections>
+                    <!-- Filter SubSection -->
+                    <op:ObjectPageSubSection importance="Low">
+                        <fb:FilterBar
+                            id="filterbar01"
+                            useToolbar="true"
+                            search="onMainSearch01"
+                            showFilterConfiguration="false"
+                        >
+                            <fb:filterGroupItems>
+                                <fb:FilterGroupItem
+                                    name="Risk"
+                                    label="Risk ID"
+                                    groupName="Group1"
+                                    visibleInFilterBar="true"
+                                >
+                                    <fb:control>
+                                        <MultiInput
+                                            id="idRiskId01"
+                                            name="Risk"
+                                            showValueHelp="true"
+                                            valueHelpRequest="onRiskIdValueHelp01"
+                                            placeholder="Select Risk"
+                                            change="onChangeRisk01"
+                                        />
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+                                <fb:FilterGroupItem
+                                    name="LocationDesc"
+                                    label="Location"
+                                    groupName="Group1"
+                                    visibleInFilterBar="true"
+                                >
+                                    <fb:control>
+                                        <MultiInput
+                                            id="idLocation01"
+                                            name="LocationDesc"
+                                            showValueHelp="true"
+                                            valueHelpRequest="onLocKeyRefValueHelp01"
+                                            placeholder="Select Location"
+                                            change="onChangeLocation01"
+                                        />
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+                            </fb:filterGroupItems>
+                        </fb:FilterBar>
+                    </op:ObjectPageSubSection>
+
+                    <!-- Table SubSection -->
+                    <op:ObjectPageSubSection importance="High">
+                        <table:Table
+                            id="table01"
+                            selectionMode="None"
+                            width="100%"
+                            fixedColumnCount="0"
+                            enableSelectAll="false"                            
+                            class="sapUiResponsiveMargin"
+                        >
+                            <table:extension>
+                                <OverflowToolbar>
+                                    <Title text="Risk Assessment" level="H2" />
+                                    
+                                    <ToolbarSpacer />
+                                    <Button icon="sap-icon://excel-attachment" text="Export to Excel" press=".onExportExcel01" />
+                                </OverflowToolbar>
+                            </table:extension>
+
+                            <table:columns>
+                                <table:Column width="300px"
+                                    sortProperty="Risk"
+                                    filterProperty="Risk"
+                                >
+                                    <Label text="Risk" />
+                                    <table:template>
+                                        <Text text="{RiskService>Risk}" />
+                                    </table:template>
+                                </table:Column>
+                                <!-- <table:Column width="300px"
+                                    sortProperty="RiskDesc"
+                                    filterProperty="RiskDesc"
+                                >
+                                    <Label text="Risk Description" />
+                                    <table:template>
+                                        <Text text="{RiskService>RiskDesc}" />
+                                    </table:template>
+                                </table:Column> -->
+                                <table:Column width="300px"
+                                    sortProperty="LocationDesc"
+                                    filterProperty="LocationDesc"
+                                >
+                                    <Label text="Location" />
+                                    <table:template>
+                                        <Text
+                                            text="{RiskService>LocationDesc}"
+                                        />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column width="300px"
+                                    sortProperty="HazardDec"
+                                    filterProperty="HazardDec"
+                                >
+                                    <Label text="Item/Hazard" />
+                                    <table:template>
+                                        <VBox>
+                                            <Text text="{RiskService>Hazard}" />
+                                            <Text text="{RiskService>HazardDec}" />
+                                        </VBox>
+                                    </table:template>
+                                </table:Column>
+                                <table:Column width="180px"
+                                    sortProperty="PreLikelihood"
+                                    filterProperty="PreLikelihood"
+                                >
+                                    <Label text="Pre Likelihood" />
+                                    <table:template>
+                                        <Text
+                                            text="{RiskService>PreLikelihood}"
+                                        />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column width="180px"
+                                    sortProperty="PreSeverity"
+                                    filterProperty="PreSeverity"
+                                >
+                                    <Label text="Severity" />
+                                    <table:template>
+                                        <Text
+                                            text="{RiskService>PreSeverity}"
+                                        />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column width="180px"
+                                    sortProperty="PreRisklevel"
+                                    filterProperty="PreRisklevel"
+                                >
+                                    <Label text="Risk Level" />
+                                    <table:template>
+                                        <Text
+                                            text="{RiskService>PreRisklevel}"
+                                        />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column width="300px"
+                                    sortProperty="ContMeasuresDesc"
+                                    filterProperty="ContMeasuresDesc"
+                                >
+                                    <Label text="Control Measures" />
+                                    <table:template>
+                                        <Text
+                                            text="{RiskService>ContMeasuresDesc}"
+                                        />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column width="180px"
+                                    sortProperty="Likelihood"
+                                    filterProperty="Likelihood"
+                                >
+                                    <Label text="Likelihood" />
+                                    <table:template>
+                                        <Text text="{RiskService>Likelihood}" />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column width="180px"
+                                    sortProperty="Severity"
+                                    filterProperty="Severity"
+                                >
+                                    <Label text="Severity" />
+                                    <table:template>
+                                        <Text text="{RiskService>Severity}" />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column width="180px"
+                                    sortProperty="Risklevel"
+                                    filterProperty="Risklevel"
+                                >
+                                    <Label text="Risk level" />
+                                    <table:template>
+                                        <Text text="{RiskService>Risklevel}" />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column width="180px"
+                                    sortProperty="Specific"
+                                    filterProperty="Specific"
+                                >
+                                    <Label text="Specific" />
+                                    <table:template>
+                                        <Text text="{RiskService>Specific}" />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column width="180px"
+                                    sortProperty="AdequateCtrl"
+                                    filterProperty="AdequateCtrl"
+                                >
+                                    <Label text="Adequate Control" />
+                                    <table:template>
+                                        <Text
+                                            text="{RiskService>AdequateCtrl}"
+                                        />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column width="180px"
+                                    sortProperty="IssueDate"
+                                    filterProperty="IssueDate"
+                                >
+                                    <Label text="Issue Date" />
+                                    <table:template>
+                                        <Text text="{RiskService>IssueDate}" />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column width="180px"
+                                    sortProperty="Prepared"
+                                    filterProperty="Prepared"
+                                >
+                                    <Label text="Prepared" />
+                                    <table:template>
+                                        <Text text="{RiskService>Prepared}" />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column width="180px"
+                                    sortProperty="ReviewedBy"
+                                    filterProperty="ReviewedBy"
+                                >
+                                    <Label text="Reviewed By" />
+                                    <table:template>
+                                        <Text text="{RiskService>ReviewedBy}" />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column width="180px"
+                                    sortProperty="AcceptedBy"
+                                    filterProperty="AcceptedBy"
+                                >
+                                    <Label text="Accepted By" />
+                                    <table:template>
+                                        <Text text="{RiskService>AcceptedBy}" />
+                                    </table:template>
+                                </table:Column>
+                            </table:columns>
+                        </table:Table>
+                    </op:ObjectPageSubSection>
+                </op:subSections>
+            </op:ObjectPageSection>
+
+            <!-- TAB 2: Environmental Aspect And Impact -->
+            <op:ObjectPageSection id="sectionEnv" title="Environmental Aspect And Impact" importance="High">
+                <op:subSections>
+                    <!-- Filter SubSection -->
+                    <op:ObjectPageSubSection importance="Low">
+                        <fb:FilterBar
+                            id="filterbar02"
+                            useToolbar="true"
+                            search="onMainSearch02"
+                            showFilterConfiguration="false"
+                        >
+                            <fb:filterGroupItems>
+                                <fb:FilterGroupItem
+                                    name="RiskId"
+                                    label="Risk"
+                                    groupName="Group2"
+                                    visibleInFilterBar="true"
+                                >
+                                    <fb:control>
+                                        <MultiInput
+                                            id="idRiskId02"
+                                            name="RiskId"
+                                            showValueHelp="true"
+                                            valueHelpRequest="onRiskIdValueHelp02"
+                                            placeholder="Select Risk"
+                                            change="onChangeRisk"
+                                        />
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+                                <fb:FilterGroupItem
+                                    name="LocKeyRef"
+                                    label="Location"
+                                    groupName="Group2"
+                                    visibleInFilterBar="true"
+                                >
+                                    <fb:control>
+                                        <MultiInput
+                                            id="idLocation02"
+                                            name="LocKeyRef"
+                                            showValueHelp="true"
+                                            valueHelpRequest="onLocKeyRefValueHelp02"
+                                            placeholder="Select Location"
+                                            change="onChangeLocation"
+                                        />
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+                            </fb:filterGroupItems>
+                        </fb:FilterBar>
+                    </op:ObjectPageSubSection>
+
+                    <!-- Table SubSection -->
+                    <op:ObjectPageSubSection importance="High">
+                        <table:Table
+                            id="table02"
+                            selectionMode="None"
+                            width="100%"
+                            fixedColumnCount="0"
+                            class="sapUiResponsiveMargin"
+                        >
+                            <table:extension>
+                                <OverflowToolbar>
+                                    <Title
+                                        text="Environment Aspects"
+                                        level="H2"
+                                    />
+                                    <ToolbarSpacer />
+                                    <Button
+                                        icon="sap-icon://excel-attachment"
+                                        text="Export to Excel"
+                                        press=".onExportExcel02"
+                                    />
+                                </OverflowToolbar>
+                            </table:extension>
+
+                            <table:columns>
+                                <table:Column
+                                    width="4rem"
+                                    sortProperty="RiskId"
+                                    filterProperty="RiskId"
+                                >
+                                    <Label text="Risk ID" />
+                                    <table:template>
+                                        <Text text="{RiskId}" />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column
+                                    width="180px"
+                                    sortProperty="LocKeyRef"
+                                    filterProperty="LocKeyRef"
+                                >
+                                    <Label text="Location" />
+                                    <table:template>
+                                        <Text text="{LocKeyRef}" />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column
+                                    width="300px"
+                                    sortProperty="Aspect"
+                                    filterProperty="Aspect"
+                                >
+                                    <Label text="Aspect" />
+                                    <table:template>
+                                        <Text text="{Aspect}" />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column
+                                    width="300px"
+                                    sortProperty="Hazard"
+                                    filterProperty="Hazard"
+                                >
+                                    <Label text="Hazard" />
+                                    <table:template>
+                                        <Text text="{Hazard}" />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column
+                                    width="300px"
+                                    sortProperty="Impact"
+                                    filterProperty="Impact"
+                                >
+                                    <Label text="Impact" />
+                                    <table:template>
+                                        <Text text="{Impact}" />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column
+                                    width="10rem"
+                                    sortProperty="Consequence"
+                                    filterProperty="Consequence"
+                                >
+                                    <Label text="Consequence" />
+                                    <table:template>
+                                        <Text text="{Consequence}" />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column
+                                    width="10rem"
+                                    sortProperty="Likelihood"
+                                    filterProperty="Likelihood"
+                                >
+                                    <Label text="Likelihood" />
+                                    <table:template>
+                                        <Text text="{Likelihood}" />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column
+                                    width="7rem"
+                                    sortProperty="RiskRating"
+                                    filterProperty="RiskRating"
+                                >
+                                    <Label text="Risk Rating" />
+                                    <table:template>
+                                        <Text text="{RiskRating}" />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column
+                                    width="400px"
+                                    sortProperty="Mitigation"
+                                    filterProperty="Mitigation"
+                                >
+                                    <Label text="Mitigation" />
+                                    <table:template>
+                                        <Text text="{Mitigation}" />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column
+                                    width="8rem"
+                                    sortProperty="PcrConsequence"
+                                    filterProperty="PcrConsequence"
+                                >
+                                    <Label text="Consequence" />
+                                    <table:template>
+                                        <Text text="{PcrConsequence}" />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column
+                                    width="7rem"
+                                    sortProperty="PcrLikelihood"
+                                    filterProperty="PcrLikelihood"
+                                >
+                                    <Label text="PCR Likelihood" />
+                                    <table:template>
+                                        <Text text="{PcrLikelihood}" />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column
+                                    width="7rem"
+                                    sortProperty="PcrRiskRating"
+                                    filterProperty="PcrRiskRating"
+                                >
+                                    <Label text="PCR Risk Rating" />
+                                    <table:template>
+                                        <Text text="{PcrRiskRating}" />
+                                    </table:template>
+                                </table:Column>
+                            </table:columns>
+                        </table:Table>
+                    </op:ObjectPageSubSection>
+                </op:subSections>
+            </op:ObjectPageSection>
+        </op:sections>
+    </op:ObjectPageLayout>
+</mvc:View>

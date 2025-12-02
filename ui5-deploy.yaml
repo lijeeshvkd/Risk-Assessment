@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+
+specVersion: "3.1"
+metadata:
+  name: com.ehs.zehssaftyv2
+type: application
+builder:
+  resources:
+    excludes:
+      - /test/**
+      - /localService/**
+  customTasks:
+    - name: deploy-to-abap
+      afterTask: generateCachebusterInfo
+      configuration:
+        target:
+          destination: BAS_DEST_OSD
+          url: http://172.20.7.111:8021
+          client: '100'
+        app:
+          name: ZEHS_SAFTY1
+          description: Fiori application
+          package: ZFIORI
+          transport: OSDK903924
+        exclude:
+          - /test/

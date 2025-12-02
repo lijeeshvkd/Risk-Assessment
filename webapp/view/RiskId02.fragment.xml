@@ -1,0 +1,33 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+  <Dialog
+    id="selectDialog02"
+    title="Select Items"
+    draggable="true"
+    resizable="true"
+    afterClose="onDialogAfterClose02"
+  >
+    <VBox>
+      <SearchField
+        id="searchField02"
+        liveChange="onSearch02"
+        placeholder="Search..."
+      />
+      <List
+        id="itemList02"
+        mode="MultiSelect"  
+        growing="true"
+        items="{/ZEHS_I_RISK_ID}"
+        selectionChange="onSelectionChange02"
+      >
+        <StandardListItem
+          title="{id}"
+        />
+      </List>
+    </VBox>
+
+    <buttons>
+      <Button text="Cancel" press="onCancel02" />
+      <Button text="OK" press="onConfirm02" />
+    </buttons>
+  </Dialog>
+</core:FragmentDefinition>
