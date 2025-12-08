@@ -1,7 +1,8 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    "sap/ui/export/Spreadsheet"
-], (Controller, Spreadsheet) => {
+    "sap/ui/export/Spreadsheet",
+    "sap/m/MessageBox"
+], (Controller, Spreadsheet, MessageBox) => {
     "use strict";
 
     return Controller.extend("com.ehs.zehssaftyv2.controller.View1", {
@@ -14,6 +15,10 @@ sap.ui.define([
             var oSource = oEvant.getSource();
             var filterItems = oSource.getFilterGroupItems();
             var aFilters = [];
+            var oFilterFieldsFilled = {
+                Risk: false,
+                LocationDesc: false
+            };
 
             filterItems.forEach(function (oFilterGroupItem) {
                 var oControl = oSource.determineControlByFilterItem(oFilterGroupItem); // safer way
@@ -46,6 +51,7 @@ sap.ui.define([
                 if (aFilterValues.length > 0) {
                     // Create filters for each token value and combine with OR
                     var aTokenFilters = aFilterValues.map(function (sVal) {
+                        oFilterFieldsFilled[oFilterGroupItem.getName()] = true;
                         return new sap.ui.model.Filter(
                             oFilterGroupItem.getName(),
                             sap.ui.model.FilterOperator.EQ,
@@ -54,18 +60,21 @@ sap.ui.define([
                     });
 
                     // Combine tokens filters with OR operator because any token match should qualify
-                    var oCombinedFilter = new sap.ui.model.Filter(aTokenFilters, true);
+                    var oCombinedFilter = new sap.ui.model.Filter(aTokenFilters, false);
                     aFilters.push(oCombinedFilter);
                 }
             });
-
-            oTable.bindRows({
-                path: "RiskService>/RiskSafeySet",
-                filters: aFilters,
-                parameters: {
-                    // Optional: Add OData parameters like $expand, $select, etc.
-                }
-            });
+            if (aFilters.length && (!oFilterFieldsFilled.Risk|| !oFilterFieldsFilled.LocationDesc)) {
+                oTable.bindRows({
+                    path: "RiskService>/RiskSafeySet",
+                    filters: aFilters,
+                    parameters: {
+                        // Optional: Add OData parameters like $expand, $select, etc.
+                    }
+                });
+            } else {
+                MessageBox.error("Please select either a Risk ID or a Location to apply the filter");
+            }
         },
 
         onMainSearch02: function (oEvant) {
@@ -115,7 +124,7 @@ sap.ui.define([
                     });
 
                     // Combine tokens filters with OR operator because any token match should qualify
-                    var oCombinedFilter = new sap.ui.model.Filter(aTokenFilters, true);
+                    var oCombinedFilter = new sap.ui.model.Filter(aTokenFilters, false);
                     aFilters.push(oCombinedFilter);
                 }
             });

@@ -37,12 +37,7 @@
                 <op:subSections>
                     <!-- Filter SubSection -->
                     <op:ObjectPageSubSection importance="Low">
-                        <fb:FilterBar
-                            id="filterbar01"
-                            useToolbar="true"
-                            search="onMainSearch01"
-                            showFilterConfiguration="false"
-                        >
+                        <fb:FilterBar id="filterbar01" useToolbar="true" search="onMainSearch01" showFilterConfiguration="false" >
                             <fb:filterGroupItems>
                                 <fb:FilterGroupItem
                                     name="Risk"
@@ -70,7 +65,7 @@
                                     <fb:control>
                                         <MultiInput
                                             id="idLocation01"
-                                            name="LocationDesc"
+                                            name="LOC_KEY_REF"
                                             showValueHelp="true"
                                             valueHelpRequest="onLocKeyRefValueHelp01"
                                             placeholder="Select Location"
@@ -102,15 +97,32 @@
                             </table:extension>
 
                             <table:columns>
-                                <table:Column width="300px"
-                                    sortProperty="Risk"
-                                    filterProperty="Risk"
-                                >
-                                    <Label text="Risk" />
+                                <table:Column width="300px" sortProperty="HazardDec" filterProperty="HazardDec">
+                                    <Label text="Item/Hazard" />
                                     <table:template>
-                                        <Text text="{RiskService>Risk}" />
+                                        <VBox>
+                                            <Text text="{RiskService>Hazard}" />
+                                            <Text text="{RiskService>HazardDec}" />
+                                        </VBox>
                                     </table:template>
                                 </table:Column>
+
+                                <table:Column width="300px" sortProperty="Risk" filterProperty="Risk">
+                                    <Label text="Risk" />
+                                    <table:template>
+                                        <Text text="{RiskService>RiskDesc}" />
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="300px" sortProperty="RevisionDescr" filterProperty="RevisionDescr">
+                                    <Label text="Revision" />
+                                    <table:template>
+                                        <VBox>
+                                            <Text text="{RiskService>RevisionDescr}" />
+                                        </VBox>
+                                    </table:template>
+                                </table:Column>
+
                                 <!-- <table:Column width="300px"
                                     sortProperty="RiskDesc"
                                     filterProperty="RiskDesc"
@@ -120,156 +132,104 @@
                                         <Text text="{RiskService>RiskDesc}" />
                                     </table:template>
                                 </table:Column> -->
-                                <table:Column width="300px"
-                                    sortProperty="LocationDesc"
-                                    filterProperty="LocationDesc"
-                                >
+                                <!-- <table:Column width="300px" sortProperty="LocationDesc" filterProperty="LocationDesc">
                                     <Label text="Location" />
                                     <table:template>
-                                        <Text
-                                            text="{RiskService>LocationDesc}"
-                                        />
+                                        <Text text="{RiskService>LocationDesc}" />
                                     </table:template>
-                                </table:Column>
-                                <table:Column width="300px"
-                                    sortProperty="HazardDec"
-                                    filterProperty="HazardDec"
-                                >
-                                    <Label text="Item/Hazard" />
-                                    <table:template>
-                                        <VBox>
-                                            <Text text="{RiskService>Hazard}" />
-                                            <Text text="{RiskService>HazardDec}" />
-                                        </VBox>
-                                    </table:template>
-                                </table:Column>
-                                <table:Column width="180px"
-                                    sortProperty="PreLikelihood"
-                                    filterProperty="PreLikelihood"
-                                >
+                                </table:Column> -->
+
+                                <table:Column width="180px" sortProperty="PreLikelihood" filterProperty="PreLikelihood" >
                                     <Label text="Pre Likelihood" />
                                     <table:template>
-                                        <Text
-                                            text="{RiskService>PreLikelihood}"
-                                        />
+                                        <Text text="{RiskService>PreLikelihood}" />
                                     </table:template>
                                 </table:Column>
-                                <table:Column width="180px"
-                                    sortProperty="PreSeverity"
-                                    filterProperty="PreSeverity"
-                                >
-                                    <Label text="Severity" />
+
+                                <table:Column width="180px" sortProperty="PreSeverity" filterProperty="PreSeverity" >
+                                    <Label text="Pre Severity" />
                                     <table:template>
-                                        <Text
-                                            text="{RiskService>PreSeverity}"
-                                        />
+                                        <Text text="{RiskService>PreSeverity}" />
                                     </table:template>
                                 </table:Column>
-                                <table:Column width="180px"
-                                    sortProperty="PreRisklevel"
-                                    filterProperty="PreRisklevel"
-                                >
+
+                                <table:Column width="180px" sortProperty="PreRisklevel" filterProperty="PreRisklevel">
                                     <Label text="Risk Level" />
                                     <table:template>
-                                        <Text
-                                            text="{RiskService>PreRisklevel}"
-                                        />
+                                        <Text text="{RiskService>PreRisklevel}" />
                                     </table:template>
                                 </table:Column>
-                                <table:Column width="300px"
-                                    sortProperty="ContMeasuresDesc"
-                                    filterProperty="ContMeasuresDesc"
-                                >
+
+                                <table:Column width="300px" sortProperty="ContMeasuresDesc" filterProperty="ContMeasuresDesc">
                                     <Label text="Control Measures" />
                                     <table:template>
-                                        <Text
-                                            text="{RiskService>ContMeasuresDesc}"
-                                        />
+                                        <Text text="{RiskService>ContMeasuresDesc}" />
                                     </table:template>
                                 </table:Column>
-                                <table:Column width="180px"
-                                    sortProperty="Likelihood"
-                                    filterProperty="Likelihood"
-                                >
+
+                                <table:Column width="180px" sortProperty="Likelihood" filterProperty="Likelihood">
                                     <Label text="Likelihood" />
                                     <table:template>
                                         <Text text="{RiskService>Likelihood}" />
                                     </table:template>
                                 </table:Column>
-                                <table:Column width="180px"
-                                    sortProperty="Severity"
-                                    filterProperty="Severity"
-                                >
+
+                                <table:Column width="180px" sortProperty="Severity" filterProperty="Severity" >
                                     <Label text="Severity" />
                                     <table:template>
                                         <Text text="{RiskService>Severity}" />
                                     </table:template>
                                 </table:Column>
-                                <table:Column width="180px"
-                                    sortProperty="Risklevel"
-                                    filterProperty="Risklevel"
-                                >
+
+                                <table:Column width="180px" sortProperty="Risklevel" filterProperty="Risklevel" >
                                     <Label text="Risk level" />
                                     <table:template>
                                         <Text text="{RiskService>Risklevel}" />
                                     </table:template>
                                 </table:Column>
-                                <table:Column width="180px"
-                                    sortProperty="Specific"
-                                    filterProperty="Specific"
-                                >
-                                    <Label text="Specific" />
+
+                                <table:Column width="180px" sortProperty="Specific" filterProperty="Specific">
+                                    <Label text="Specific Control" />
                                     <table:template>
                                         <Text text="{RiskService>Specific}" />
                                     </table:template>
                                 </table:Column>
-                                <table:Column width="180px"
-                                    sortProperty="AdequateCtrl"
-                                    filterProperty="AdequateCtrl"
-                                >
+
+                                <table:Column width="180px" sortProperty="AdequateCtrl" filterProperty="AdequateCtrl" >
                                     <Label text="Adequate Control" />
                                     <table:template>
-                                        <Text
-                                            text="{RiskService>AdequateCtrl}"
-                                        />
+                                        <Text text="{RiskService>AdequateCtrl}" />
                                     </table:template>
                                 </table:Column>
-                                <table:Column width="180px"
-                                    sortProperty="IssueDate"
-                                    filterProperty="IssueDate"
-                                >
+
+                                <table:Column width="180px" sortProperty="IssueDate" filterProperty="IssueDate" >
                                     <Label text="Issue Date" />
                                     <table:template>
                                         <Text text="{RiskService>IssueDate}" />
                                     </table:template>
                                 </table:Column>
-                                <table:Column width="180px"
-                                    sortProperty="Prepared"
-                                    filterProperty="Prepared"
-                                >
-                                    <Label text="Prepared" />
+
+                                <table:Column width="180px" sortProperty="Prepared" filterProperty="Prepared">
+                                    <Label text="Prepared By" />
                                     <table:template>
-                                        <Text text="{RiskService>Prepared}" />
+                                        <Text text="{RiskService>PreparedBy}" />
                                     </table:template>
                                 </table:Column>
-                                <table:Column width="180px"
-                                    sortProperty="ReviewedBy"
-                                    filterProperty="ReviewedBy"
-                                >
+
+                                <table:Column width="180px" sortProperty="ReviewedBy" filterProperty="ReviewedBy">
                                     <Label text="Reviewed By" />
                                     <table:template>
                                         <Text text="{RiskService>ReviewedBy}" />
                                     </table:template>
                                 </table:Column>
-                                <table:Column width="180px"
-                                    sortProperty="AcceptedBy"
-                                    filterProperty="AcceptedBy"
-                                >
+
+                                <table:Column width="180px" sortProperty="AcceptedBy" filterProperty="AcceptedBy" >
                                     <Label text="Accepted By" />
                                     <table:template>
                                         <Text text="{RiskService>AcceptedBy}" />
                                     </table:template>
                                 </table:Column>
+
                             </table:columns>
                         </table:Table>
                     </op:ObjectPageSubSection>
@@ -281,12 +241,7 @@
                 <op:subSections>
                     <!-- Filter SubSection -->
                     <op:ObjectPageSubSection importance="Low">
-                        <fb:FilterBar
-                            id="filterbar02"
-                            useToolbar="true"
-                            search="onMainSearch02"
-                            showFilterConfiguration="false"
-                        >
+                        <fb:FilterBar id="filterbar02" useToolbar="true" search="onMainSearch02" showFilterConfiguration="false">
                             <fb:filterGroupItems>
                                 <fb:FilterGroupItem
                                     name="RiskId"
