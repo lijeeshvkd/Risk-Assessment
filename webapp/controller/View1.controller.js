@@ -64,7 +64,7 @@ sap.ui.define([
                     aFilters.push(oCombinedFilter);
                 }
             });
-            if (aFilters.length && (!oFilterFieldsFilled.Risk|| !oFilterFieldsFilled.LocationDesc)) {
+            if (aFilters.length && (!oFilterFieldsFilled.Risk || !oFilterFieldsFilled.LocationDesc)) {
                 oTable.bindRows({
                     path: "RiskService>/RiskSafeySet",
                     filters: aFilters,
@@ -130,7 +130,7 @@ sap.ui.define([
             });
 
             oTable.bindRows({
-                path: "/AspectImpactSet",
+                path: "/ZASPECT_IMPACTSet",
                 filters: aFilters,
                 parameters: {
                     // Optional: Add OData parameters like $expand, $select, etc.
@@ -169,6 +169,15 @@ sap.ui.define([
             }
         },
 
+        onRiskSelectAll: function(oEvent) {
+            var oList = sap.ui.getCore().byId("itemList01");
+            if (oEvent.getParameter("selected")) {
+                oList.selectAll();
+            } else {
+                oList.removeSelections();
+            }
+        },
+
         onSearch01: function (oEvent) {
             var sQuery = oEvent.getParameter("newValue");
             var oList = sap.ui.getCore().byId("itemList01");
@@ -178,8 +187,9 @@ sap.ui.define([
 
                 if (sQuery && sQuery.length > 0) {
                     aFilters.push(new sap.ui.model.Filter([
-                        new sap.ui.model.Filter("id", sap.ui.model.FilterOperator.Contains, sQuery)
-                    ], false)); // OR filter
+                        new sap.ui.model.Filter("id", sap.ui.model.FilterOperator.Contains, sQuery),
+                        new sap.ui.model.Filter("type", sap.ui.model.FilterOperator.EQ, "Safety")
+                    ], true)); // OR filter
                 }
                 oBinding.filter(aFilters);
             }

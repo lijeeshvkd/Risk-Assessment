@@ -4,24 +4,24 @@
     title="Select Items"
     draggable="true"
     resizable="true"
-    afterClose="onDialogAfterClose01"
-  >
+    afterClose="onDialogAfterClose01" >
     <VBox>
-      <SearchField
-        id="searchField01"
+      <CheckBox text="Select All" select="onRiskSelectAll" />
+      <SearchField id="searchField01"
         liveChange="onSearch01"
-        placeholder="Search..."
-      />
-      <List
-        id="itemList01"
+        placeholder="Search..." />
+      <List id="itemList01"
         mode="MultiSelect"  
         growing="true"
-        items="{/ZEHS_I_RISK_ID}"
+        items="{
+          path: '/ZEHS_I_RISK_ID',
+          filters: [
+            { path: 'type', operator: 'EQ', value1: 'Safety' }
+          ]
+        }"
         selectionChange="onSelectionChange01"
-      >
-        <StandardListItem
-          title="{id}"
-        />
+        rememberSelections="true" >
+        <StandardListItem title="{id}" description="{title}" />
       </List>
     </VBox>
 

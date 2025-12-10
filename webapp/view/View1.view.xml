@@ -39,12 +39,7 @@
                     <op:ObjectPageSubSection importance="Low">
                         <fb:FilterBar id="filterbar01" useToolbar="true" search="onMainSearch01" showFilterConfiguration="false" >
                             <fb:filterGroupItems>
-                                <fb:FilterGroupItem
-                                    name="Risk"
-                                    label="Risk ID"
-                                    groupName="Group1"
-                                    visibleInFilterBar="true"
-                                >
+                                <fb:FilterGroupItem name="Risk" label="Risk Assessment ID" groupName="Group1" visibleInFilterBar="true" >
                                     <fb:control>
                                         <MultiInput
                                             id="idRiskId01"
@@ -52,16 +47,14 @@
                                             showValueHelp="true"
                                             valueHelpRequest="onRiskIdValueHelp01"
                                             placeholder="Select Risk"
-                                            change="onChangeRisk01"
-                                        />
+                                            change="onChangeRisk01" />
                                     </fb:control>
                                 </fb:FilterGroupItem>
                                 <fb:FilterGroupItem
                                     name="LocationDesc"
                                     label="Location"
                                     groupName="Group1"
-                                    visibleInFilterBar="true"
-                                >
+                                    visibleInFilterBar="true" >
                                     <fb:control>
                                         <MultiInput
                                             id="idLocation01"
@@ -79,14 +72,7 @@
 
                     <!-- Table SubSection -->
                     <op:ObjectPageSubSection importance="High">
-                        <table:Table
-                            id="table01"
-                            selectionMode="None"
-                            width="100%"
-                            fixedColumnCount="0"
-                            enableSelectAll="false"                            
-                            class="sapUiResponsiveMargin"
-                        >
+                        <table:Table id="table01" selectionMode="None" width="100%" fixedColumnCount="0" enableSelectAll="false" class="sapUiResponsiveMargin" >
                             <table:extension>
                                 <OverflowToolbar>
                                     <Title text="Risk Assessment" level="H2" />
@@ -97,6 +83,13 @@
                             </table:extension>
 
                             <table:columns>
+                                <table:Column width="300px" sortProperty="Id" filterProperty="Id">
+                                    <Label text="Item No" />
+                                    <table:template>
+                                        <Text text="{RiskService>Id}" />
+                                    </table:template>
+                                </table:Column>
+
                                 <table:Column width="300px" sortProperty="HazardDec" filterProperty="HazardDec">
                                     <Label text="Item/Hazard" />
                                     <table:template>
@@ -107,19 +100,17 @@
                                     </table:template>
                                 </table:Column>
 
+                                <table:Column width="300px" sortProperty="Status" filterProperty="Status">
+                                    <Label text="Status" />
+                                    <table:template>
+                                        <Text text="{RiskService>Status}" />
+                                    </table:template>
+                                </table:Column>
+
                                 <table:Column width="300px" sortProperty="Risk" filterProperty="Risk">
                                     <Label text="Risk" />
                                     <table:template>
                                         <Text text="{RiskService>RiskDesc}" />
-                                    </table:template>
-                                </table:Column>
-
-                                <table:Column width="300px" sortProperty="RevisionDescr" filterProperty="RevisionDescr">
-                                    <Label text="Revision" />
-                                    <table:template>
-                                        <VBox>
-                                            <Text text="{RiskService>RevisionDescr}" />
-                                        </VBox>
                                     </table:template>
                                 </table:Column>
 
@@ -230,6 +221,15 @@
                                     </table:template>
                                 </table:Column>
 
+                                <table:Column width="300px" sortProperty="RevisionDescr" filterProperty="RevisionDescr">
+                                    <Label text="Revision" />
+                                    <table:template>
+                                        <VBox>
+                                            <Text text="{RiskService>RevisionDescr}" />
+                                        </VBox>
+                                    </table:template>
+                                </table:Column>
+
                             </table:columns>
                         </table:Table>
                     </op:ObjectPageSubSection>
@@ -237,7 +237,7 @@
             </op:ObjectPageSection>
 
             <!-- TAB 2: Environmental Aspect And Impact -->
-            <op:ObjectPageSection id="sectionEnv" title="Environmental Aspect And Impact" importance="High">
+            <op:ObjectPageSection id="sectionEnv" title="Aspect And Impact" importance="High">
                 <op:subSections>
                     <!-- Filter SubSection -->
                     <op:ObjectPageSubSection importance="Low">
@@ -247,8 +247,7 @@
                                     name="RiskId"
                                     label="Risk"
                                     groupName="Group2"
-                                    visibleInFilterBar="true"
-                                >
+                                    visibleInFilterBar="true" >
                                     <fb:control>
                                         <MultiInput
                                             id="idRiskId02"
@@ -293,7 +292,7 @@
                             <table:extension>
                                 <OverflowToolbar>
                                     <Title
-                                        text="Environment Aspects"
+                                        text="Aspects"
                                         level="H2"
                                     />
                                     <ToolbarSpacer />
@@ -336,16 +335,15 @@
                                         <Text text="{Aspect}" />
                                     </table:template>
                                 </table:Column>
-                                <table:Column
+                                <!-- <table:Column
                                     width="300px"
                                     sortProperty="Hazard"
-                                    filterProperty="Hazard"
-                                >
+                                    filterProperty="Hazard" >
                                     <Label text="Hazard" />
                                     <table:template>
                                         <Text text="{Hazard}" />
                                     </table:template>
-                                </table:Column>
+                                </table:Column> -->
                                 <table:Column
                                     width="300px"
                                     sortProperty="Impact"
