@@ -1,12 +1,51 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/export/Spreadsheet",
-    "sap/m/MessageBox"
-], (Controller, Spreadsheet, MessageBox) => {
+    "sap/m/MessageBox",
+    "com/ehs/zehssaftyv2/model/formatter"
+], (Controller, Spreadsheet, MessageBox, Formatter) => {
     "use strict";
 
     return Controller.extend("com.ehs.zehssaftyv2.controller.View1", {
+        formatter: Formatter,
         onInit() {
+            var oViewModel = new sap.ui.model.json.JSONModel();
+            oViewModel.setData({
+                aStatus: [
+                    {
+                        Status: "00",
+                        StatusText: "Void"
+                    }, {
+                        Status: "01",
+                        StatusText: "New"
+                    }, {
+                        Status: "02",
+                        StatusText: "In Process"
+                    }, {
+                        Status: "03",
+                        StatusText: "Closed"
+                    }
+                ],
+                aStatusFilters: []
+            });
+            this.getView().setModel(oViewModel, "viewModel");
+        },
+
+        handleStatusSelectionChange: function(oEvent) {
+
+        },
+
+        handleStatusSelectionFinish: function(oEvent) {
+            var oSelectedItems = oEvent.getParameter("selectedItems"),
+                aStatusFilters = [];
+            oSelectedItems.forEach(function(oItem) {
+                aStatusFilters.push(new sap.ui.model.Filter(
+                            "Status",
+                            sap.ui.model.FilterOperator.EQ,
+                            oItem.getBindingContext("viewModel").getProperty("Status")
+                ));
+            });
+            this.getView().getModel("viewModel").setProperty("/aStatusFilters", aStatusFilters);
         },
 
         onMainSearch01: function (oEvant) {
@@ -14,6 +53,7 @@ sap.ui.define([
             oTable.setBusy(false);
             var oSource = oEvant.getSource();
             var filterItems = oSource.getFilterGroupItems();
+            var aStatusFilters = this.getView().getModel("viewModel").getProperty("/aStatusFilters")
             var aFilters = [];
             var oFilterFieldsFilled = {
                 Risk: false,
@@ -64,6 +104,12 @@ sap.ui.define([
                     aFilters.push(oCombinedFilter);
                 }
             });
+
+            if (aStatusFilters.length) {
+                var oStatusFilter = new sap.ui.model.Filter(aStatusFilters, false);
+                aFilters.push(oStatusFilter);
+            }
+
             if (aFilters.length && (!oFilterFieldsFilled.Risk || !oFilterFieldsFilled.LocationDesc)) {
                 oTable.bindRows({
                     path: "RiskService>/RiskSafeySet",
@@ -74,6 +120,12 @@ sap.ui.define([
                 });
             } else {
                 MessageBox.error("Please select either a Risk ID or a Location to apply the filter");
+            }
+        },
+
+        onHiraColumnFilter: function(oEvent) {
+            if (oEvent.getParameter("column").getFilterProperty() === "Status" && !!oEvent.getParameter("value")) {
+                // Code enhancement required if column filter required for status 
             }
         },
 
@@ -130,7 +182,7 @@ sap.ui.define([
             });
 
             oTable.bindRows({
-                path: "/ZASPECT_IMPACTSet",
+                path: "RiskService>/ZASPECT_IMPACTSet",
                 filters: aFilters,
                 parameters: {
                     // Optional: Add OData parameters like $expand, $select, etc.
@@ -427,23 +479,25 @@ sap.ui.define([
             });
 
             var aColumns = [
-                { label: "Risk", property: "Risk", type: "string", width: 10, alignment: "Center" },
-                { label: "Risk Description", property: "RiskDesc", type: "string", width: 20, alignment: "Left" },
-                { label: "Location", property: "LocationDesc", type: "string", width: 20, alignment: "Left" },
+                { label: "Item No", property: "Id", type: "string", width: 10, alignment: "Center" },
+                { label: "Item/Hazard", property: "Hazard", type: "string", width: 20, alignment: "Left" },
                 { label: "Hazard Description", property: "HazardDec", type: "string", width: 25, alignment: "Left" },
-                { label: "PreLikelihood", property: "PreLikelihood", type: "string", width: 10, alignment: "Center" },
-                { label: "PreSeverity", property: "PreSeverity", type: "string", width: 10, alignment: "Center" },
-                { label: "PreRisklevel", property: "PreRisklevel", type: "string", width: 10, alignment: "Center" },
-                { label: "ContMeasures", property: "ContMeasuresDesc", type: "string", width: 30, alignment: "Left" },
+                { label: "Status", property: "Status", type: "string", width: 10, alignment: "Center" },
+                { label: "Risk", property: "RiskDesc", type: "string", width: 10, alignment: "Center" },
+                { label: "Pre Likelihood", property: "PreLikelihood", type: "string", width: 10, alignment: "Center" },
+                { label: "Pre Severity", property: "PreSeverity", type: "string", width: 30, alignment: "Left" },
+                { label: "Risk Level", property: "PreRisklevel", type: "string", width: 10, alignment: "Center" },
+                { label: "Control Measures", property: "ContMeasuresDesc", type: "string", width: 10, alignment: "Center" },
                 { label: "Likelihood", property: "Likelihood", type: "string", width: 10, alignment: "Center" },
-                { label: "Severity", property: "Severity", type: "string", width: 10, alignment: "Center" },
-                { label: "Risklevel", property: "Risklevel", type: "string", width: 10, alignment: "Center" },
-                { label: "Specific", property: "Specific", type: "string", width: 15, alignment: "Left" },
-                { label: "AdequateCtrl", property: "AdequateCtrl", type: "string", width: 15, alignment: "Left" },
-                { label: "IssueDate", property: "IssueDate", type: "date", width: 15, alignment: "Center" },
-                { label: "Prepared", property: "Prepared", type: "string", width: 15, alignment: "Left" },
-                { label: "ReviewedBy", property: "ReviewedBy", type: "string", width: 15, alignment: "Left" },
-                { label: "AcceptedBy", property: "AcceptedBy", type: "string", width: 15, alignment: "Left" }
+                { label: "Severity", property: "Severity", type: "string", width: 15, alignment: "Left" },
+                { label: "Risk level", property: "Risklevel", type: "string", width: 15, alignment: "Left" },
+                { label: "Specific Control", property: "Specific", type: "string", width: 15, alignment: "Center" },
+                { label: "Adequate Control", property: "AdequateCtrl", type: "string", width: 15, alignment: "Left" },
+                { label: "Issue Date", property: "IssueDate", type: "date", width: 15, alignment: "Left" },
+                { label: "Prepared By", property: "PreparedBy", type: "string", width: 15, alignment: "Left" },
+                { label: "Reviewed By", property: "ReviewedBy", type: "string", width: 15, alignment: "Left" },
+                { label: "Accepted By", property: "AcceptedBy", type: "string", width: 15, alignment: "Left" },
+                { label: "Revision", property: "RevisionDescr", type: "string", width: 15, alignment: "Left" }
             ];
 
 
@@ -451,7 +505,7 @@ sap.ui.define([
             var oSettings = {
                 workbook: { columns: aColumns },
                 dataSource: aData,
-                fileName: "EnvironmentAspects.xlsx"
+                fileName: "Risk Assessment.xlsx"
             };
             var oSpreadsheet = new Spreadsheet(oSettings);
             oSpreadsheet.build().then(() => {

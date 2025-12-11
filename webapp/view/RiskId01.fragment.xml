@@ -21,7 +21,7 @@
         }"
         selectionChange="onSelectionChange01"
         rememberSelections="true" >
-        <StandardListItem title="{id}" description="{title}" />
+        <StandardListItem title="{id} - {title}" />
       </List>
     </VBox>
 
