@@ -53,6 +53,22 @@ sap.ui.define([], () => {
 			}
 
 			return sFinalReurn.trim();
+		},
+
+		formatRiskLevelState: function(sRisklevel) {
+			var sReturn = "None";
+
+			if (sRisklevel && (parseInt(sRisklevel) >= 1 && parseInt(sRisklevel) <= 4) ) {
+				sReturn = "Success";
+			} else if (sRisklevel && (parseInt(sRisklevel) >= 5 && parseInt(sRisklevel) <= 10) ) {
+				sReturn = "Warning";
+			} else if (sRisklevel && (parseInt(sRisklevel) >= 12 && parseInt(sRisklevel) <= 25) ) {
+				sReturn = "Error";
+			} else {
+				sReturn = "None";
+			}
+
+			return sReturn;
 		}
 	};
 });
