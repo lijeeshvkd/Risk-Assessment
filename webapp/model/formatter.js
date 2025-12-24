@@ -32,39 +32,19 @@ sap.ui.define([], () => {
 			}
 		},
 
-		formatRiskLevel: function(sRisklevel, sLikelihood, sSeverity) {
+		formatRiskLevel: function(sRisklevel) {
 			var sReturn = "",
 				sFinalReurn = "";
 
-			if (sLikelihood) {
-				switch (sLikelihood.trim()) {
-					case '1':
-						sReturn = sReturn + " Acceptable";
-						break;
-					case '2':
-						sReturn = sReturn + " Further Review";
-						break;
-					case '3':
-						sReturn = sReturn + " Unacceptable Risk";
-						break;
-					default:
-						break;
-				}
-			}
-
-			if (sSeverity) {
-				switch (sSeverity.trim()) {
-					case '1':
-						sReturn = sReturn + " Acceptable";
-						break;
-					case '2':
-						sReturn = sReturn + " Further Review";
-						break;
-					case '3':
-						sReturn = sReturn + " Unacceptable Risk";
-						break;
-					default:
-						break;
+			if (sRisklevel) {
+				if (parseInt(sRisklevel) >= 1 && parseInt(sRisklevel) <= 4 ) {
+					sReturn = sReturn + " Acceptable";
+				} else if (parseInt(sRisklevel) >= 5 && parseInt(sRisklevel) <= 10 ) {
+					sReturn = sReturn + " Further Review";
+				} else if (parseInt(sRisklevel) >= 12 && parseInt(sRisklevel) <= 25 ) {
+					sReturn = sReturn + " Unacceptable Risk";
+				} else {
+					sReturn = "";
 				}
 			}
 			
