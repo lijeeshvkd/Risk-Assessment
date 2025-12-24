@@ -21,6 +21,6 @@ builder:
           name: ZEHS_SAFTY1
           description: Fiori application
           package: ZFIORI
-          transport: OSDK903924
+          transport: OSDK904159
         exclude:
           - /test/

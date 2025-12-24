@@ -7,21 +7,23 @@
     afterClose="onDialogAfterClose02"
   >
     <VBox>
+      <CheckBox text="Select All" select="onAspectRiskSelectAll" />
       <SearchField
         id="searchField02"
         liveChange="onSearch02"
-        placeholder="Search..."
-      />
+        placeholder="Search..." />
       <List
         id="itemList02"
         mode="MultiSelect"  
         growing="true"
-        items="{/ZEHS_I_RISK_ID}"
-        selectionChange="onSelectionChange02"
-      >
-        <StandardListItem
-          title="{id}"
-        />
+        items="{
+          path: '/ZEHS_I_RISK_ID',
+          filters: [
+            { path: 'type', operator: 'EQ', value1: 'Environment' }
+          ]
+        }"
+        selectionChange="onSelectionChange02" >
+        <StandardListItem title="{id}" />
       </List>
     </VBox>
 

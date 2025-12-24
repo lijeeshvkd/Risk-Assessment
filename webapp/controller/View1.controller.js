@@ -230,6 +230,15 @@ sap.ui.define([
             }
         },
 
+        onAspectRiskSelectAll: function(oEvent) {
+            var oList = sap.ui.getCore().byId("itemList02");
+            if (oEvent.getParameter("selected")) {
+                oList.selectAll();
+            } else {
+                oList.removeSelections();
+            }
+        },
+
         onSearch01: function (oEvent) {
             var sQuery = oEvent.getParameter("newValue");
             var oList = sap.ui.getCore().byId("itemList01");

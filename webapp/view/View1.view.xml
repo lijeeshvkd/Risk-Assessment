@@ -18,15 +18,11 @@
         upperCaseAnchorBar="false"
         height="100%"
         enableLazyLoading="true"
-        preserveHeaderStateOnScroll="false"
-    >
+        preserveHeaderStateOnScroll="false">
         <op:headerTitle>
             <op:ObjectPageDynamicHeaderTitle>
                 <op:expandedHeading>
-                    <Title
-                        text="{i18n>title}"
-                        wrapping="true"
-                    />
+                    <Title text="{i18n>title}" wrapping="true" />
                 </op:expandedHeading>
             </op:ObjectPageDynamicHeaderTitle>
         </op:headerTitle>
@@ -46,7 +42,7 @@
                                             name="Risk"
                                             showValueHelp="true"
                                             valueHelpRequest="onRiskIdValueHelp01"
-                                            placeholder="Select Risk"
+                                            placeholder="Select Risk Assessment ID"
                                             change="onChangeRisk01" />
                                     </fb:control>
                                 </fb:FilterGroupItem>
@@ -68,7 +64,7 @@
                                     </fb:control>
                                 </fb:FilterGroupItem>
 
-                                <fb:FilterGroupItem name="Status" label="Status" groupName="Group1" visibleInFilterBar="true" >
+                                <!-- <fb:FilterGroupItem name="Status" label="Status" groupName="Group1" visibleInFilterBar="true" >
                                     <fb:control>
                                         <MultiComboBox
                                             selectionChange="handleStatusSelectionChange"
@@ -79,7 +75,7 @@
                                             <core:Item key="{viewModel>Status}" text="{viewModel>StatusText}"/>
                                         </MultiComboBox>
                                     </fb:control>
-                                </fb:FilterGroupItem>
+                                </fb:FilterGroupItem> -->
 
                             </fb:filterGroupItems>
                         </fb:FilterBar>
@@ -121,12 +117,12 @@
                                     </table:template>
                                 </table:Column>
 
-                                <table:Column width="100px">
+                                <!-- <table:Column width="100px">
                                     <Label text="Status" />
                                     <table:template>
                                         <Text text="{path:'RiskService>Status', formatter:'.formatter.statusText' }" />
                                     </table:template>
-                                </table:Column>
+                                </table:Column> -->
 
                                 <table:Column width="300px" sortProperty="Risk" filterProperty="Risk">
                                     <Label text="Risk" />
@@ -266,7 +262,7 @@
                             <fb:filterGroupItems>
                                 <fb:FilterGroupItem
                                     name="RiskId"
-                                    label="Risk"
+                                    label="Risk Assessment ID"
                                     groupName="Group2"
                                     visibleInFilterBar="true" >
                                     <fb:control>
@@ -275,7 +271,7 @@
                                             name="RiskId"
                                             showValueHelp="true"
                                             valueHelpRequest="onRiskIdValueHelp02"
-                                            placeholder="Select Risk"
+                                            placeholder="Select Risk Assessment ID"
                                             change="onChangeRisk"
                                         />
                                     </fb:control>
@@ -308,8 +304,7 @@
                             selectionMode="None"
                             width="100%"
                             fixedColumnCount="0"
-                            class="sapUiResponsiveMargin"
-                        >
+                            class="sapUiResponsiveMargin" >
                             <table:extension>
                                 <OverflowToolbar>
                                     <Title text="Aspects" level="H2" />
@@ -323,70 +318,70 @@
                                 <table:Column width="200px" sortProperty="Activity" filterProperty="Activity" >
                                     <Label text="Activity/Aspect" />
                                     <table:template>
-                                        <Text text="{Activity}" />
+                                        <Text text="{RiskService>Activity}" />
                                     </table:template>
                                 </table:Column>
 
-                                <table:Column width="180px" sortProperty="Hazard" filterProperty="Hazard" >
+                                <!-- <table:Column width="180px" sortProperty="Hazard" filterProperty="Hazard" >
                                     <Label text="Hazard/Source Of Impact" />
                                     <table:template>
-                                        <Text text="{Hazard}" />
+                                        <Text text="{RiskService>Hazard}" />
                                     </table:template>
-                                </table:Column>
+                                </table:Column> -->
 
                                 <table:Column width="300px" sortProperty="Impact" filterProperty="Impact">
                                     <Label text="Impact" />
                                     <table:template>
-                                        <Text text="{Impact}" />
+                                        <Text text="{RiskService>Impact}" />
                                     </table:template>
                                 </table:Column>
 
                                 <table:Column width="300px" sortProperty="Consequence" filterProperty="Consequence" >
                                     <Label text="Consequence" />
                                     <table:template>
-                                        <Text text="{Consequence}" />
+                                        <Text text="{RiskService>Consequence}" />
                                     </table:template>
                                 </table:Column>
 
                                 <table:Column width="300px" sortProperty="Likehood" filterProperty="Likehood" >
                                     <Label text="Likelihood" />
                                     <table:template>
-                                        <Text text="{Likehood}" />
+                                        <Text text="{RiskService>Likehood}" />
                                     </table:template>
                                 </table:Column>
 
                                 <table:Column width="7rem" sortProperty="RiskRating" filterProperty="RiskRating" >
                                     <Label text="Risk Rating" />
                                     <table:template>
-                                        <Text text="{RiskRating}" />
+                                        <Text text="{RiskService>RiskRating}" />
                                     </table:template>
                                 </table:Column>
 
                                 <table:Column width="200px" sortProperty="Mitigation" filterProperty="Mitigation" >
                                     <Label text="Mitigation/Existing Measures" />
                                     <table:template>
-                                        <Text text="{Mitigation}" />
+                                        <Text text="{RiskService>Mitigation}" />
                                     </table:template>
                                 </table:Column>
 
                                 <table:Column width="200px" sortProperty="PcConsequence" filterProperty="PcConsequence" >
                                     <Label text="Post Consequence" />
                                     <table:template>
-                                        <Text text="{PcConsequence}" />
+                                        <Text text="{RiskService>PcConsequence}" />
                                     </table:template>
                                 </table:Column>
 
                                 <table:Column width="200px" sortProperty="PcLikehood" filterProperty="PcLikehood">
                                     <Label text="Post Likehood" />
                                     <table:template>
-                                        <Text text="{PcLikehood}" />
+                                        <Text text="{RiskService>PcLikehood}" />
                                     </table:template>
                                 </table:Column>
                                 
                                 <table:Column width="400px" sortProperty="PcLikehood" filterProperty="PcRiskRating">
                                     <Label text="Post Risk Rating" />
                                     <table:template>
-                                        <Text text="{PcRiskRating}" />
+                                        <Text text="{RiskService>PcRiskRating}" />
                                     </table:template>
                                 </table:Column>
                                 
