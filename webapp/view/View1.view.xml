@@ -164,7 +164,7 @@
                                 <table:Column width="180px" sortProperty="PreRisklevel" filterProperty="PreRisklevel">
                                     <Label text="Risk Level" />
                                     <table:template>
-                                        <ObjectStatus text="{parts: [{path: 'RiskService>PreRisklevel'}, {path: 'RiskService>PreLikelihood'}, {path: 'RiskService>PreSeverity'}], formatter: '.formatter.formatRiskLevel' }" 
+                                        <ObjectStatus text="{path: 'RiskService>PreRisklevel', formatter: '.formatter.formatRiskLevel' }" 
                                             state="{path: 'RiskService>PreRisklevel', formatter: '.formatter.formatRiskLevelState'}" />
                                     </table:template>
                                 </table:Column>
@@ -193,7 +193,7 @@
                                 <table:Column width="180px" sortProperty="Risklevel" filterProperty="Risklevel" >
                                     <Label text="Risk level" />
                                     <table:template>
-                                        <ObjectStatus text="{parts: [{path: 'RiskService>Risklevel'}, {path: 'RiskService>Likelihood'}, {path: 'RiskService>Severity'}], formatter: '.formatter.formatRiskLevel' }" 
+                                        <ObjectStatus text="{path: 'RiskService>Risklevel', formatter: '.formatter.formatRiskLevel' }" 
                                             state="{path: 'RiskService>Risklevel', formatter: '.formatter.formatRiskLevelState'}" />
                                     </table:template>
                                 </table:Column>
