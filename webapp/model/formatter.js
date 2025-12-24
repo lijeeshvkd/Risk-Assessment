@@ -30,6 +30,49 @@ sap.ui.define([], () => {
 				default:
 					return sStatus;
 			}
+		},
+
+		formatRiskLevel: function(sRisklevel, sLikelihood, sSeverity) {
+			var sReturn = "",
+				sFinalReurn = "";
+
+			if (sLikelihood) {
+				switch (sLikelihood.trim()) {
+					case '1':
+						sReturn = sReturn + " Acceptable";
+						break;
+					case '2':
+						sReturn = sReturn + " Further Review";
+						break;
+					case '3':
+						sReturn = sReturn + " Unacceptable Risk";
+						break;
+					default:
+						break;
+				}
+			}
+
+			if (sSeverity) {
+				switch (sSeverity.trim()) {
+					case '1':
+						sReturn = sReturn + " Acceptable";
+						break;
+					case '2':
+						sReturn = sReturn + " Further Review";
+						break;
+					case '3':
+						sReturn = sReturn + " Unacceptable Risk";
+						break;
+					default:
+						break;
+				}
+			}
+			
+			if (sReturn) {
+				sFinalReurn = sRisklevel + " -" + sReturn;
+			}
+
+			return sFinalReurn.trim();
 		}
 	};
 });

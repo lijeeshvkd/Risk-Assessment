@@ -491,7 +491,7 @@ sap.ui.define([
                 { label: "Item No", property: "Id", type: "string", width: 10, alignment: "Center" },
                 { label: "Item/Hazard", property: "Hazard", type: "string", width: 20, alignment: "Left" },
                 { label: "Hazard Description", property: "HazardDec", type: "string", width: 25, alignment: "Left" },
-                { label: "Status", property: "Status", type: "string", width: 10, alignment: "Center" },
+                // { label: "Status", property: "Status", type: "string", width: 10, alignment: "Center" },
                 { label: "Risk", property: "RiskDesc", type: "string", width: 10, alignment: "Center" },
                 { label: "Pre Likelihood", property: "PreLikelihood", type: "string", width: 10, alignment: "Center" },
                 { label: "Pre Severity", property: "PreSeverity", type: "string", width: 30, alignment: "Left" },
@@ -502,10 +502,10 @@ sap.ui.define([
                 { label: "Risk level", property: "Risklevel", type: "string", width: 15, alignment: "Left" },
                 { label: "Specific Control", property: "Specific", type: "string", width: 15, alignment: "Center" },
                 { label: "Adequate Control", property: "AdequateCtrl", type: "string", width: 15, alignment: "Left" },
-                { label: "Issue Date", property: "IssueDate", type: "date", width: 15, alignment: "Left" },
-                { label: "Prepared By", property: "PreparedBy", type: "string", width: 15, alignment: "Left" },
-                { label: "Reviewed By", property: "ReviewedBy", type: "string", width: 15, alignment: "Left" },
-                { label: "Accepted By", property: "AcceptedBy", type: "string", width: 15, alignment: "Left" },
+                // { label: "Issue Date", property: "IssueDate", type: "date", width: 15, alignment: "Left" },
+                // { label: "Prepared By", property: "PreparedBy", type: "string", width: 15, alignment: "Left" },
+                // { label: "Reviewed By", property: "ReviewedBy", type: "string", width: 15, alignment: "Left" },
+                // { label: "Accepted By", property: "AcceptedBy", type: "string", width: 15, alignment: "Left" },
                 { label: "Revision", property: "RevisionDescr", type: "string", width: 15, alignment: "Left" }
             ];
 

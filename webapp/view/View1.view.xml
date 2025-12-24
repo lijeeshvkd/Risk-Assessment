@@ -164,7 +164,7 @@
                                 <table:Column width="180px" sortProperty="PreRisklevel" filterProperty="PreRisklevel">
                                     <Label text="Risk Level" />
                                     <table:template>
-                                        <Text text="{RiskService>PreRisklevel}" />
+                                        <Text text="{parts: [{path: 'RiskService>PreRisklevel'}, {path: 'RiskService>PreLikelihood'}, {path: 'RiskService>PreSeverity'}], formatter: '.formatter.formatRiskLevel' }" />
                                     </table:template>
                                 </table:Column>
 
@@ -192,7 +192,7 @@
                                 <table:Column width="180px" sortProperty="Risklevel" filterProperty="Risklevel" >
                                     <Label text="Risk level" />
                                     <table:template>
-                                        <Text text="{RiskService>Risklevel}" />
+                                        <Text text="{parts: [{path: 'RiskService>Risklevel'}, {path: 'RiskService>Likelihood'}, {path: 'RiskService>Severity'}], formatter: '.formatter.formatRiskLevel' }" />
                                     </table:template>
                                 </table:Column>
 
@@ -210,7 +210,7 @@
                                     </table:template>
                                 </table:Column>
 
-                                <table:Column width="180px" sortProperty="IssueDate" filterProperty="IssueDate" >
+                                <!-- <table:Column width="180px" sortProperty="IssueDate" filterProperty="IssueDate" >
                                     <Label text="Issue Date" />
                                     <table:template>
                                         <Text text="{RiskService>IssueDate}" />
@@ -236,7 +236,7 @@
                                     <table:template>
                                         <Text text="{RiskService>AcceptedBy}" />
                                     </table:template>
-                                </table:Column>
+                                </table:Column> -->
 
                                 <table:Column width="300px" sortProperty="RevisionDescr" filterProperty="RevisionDescr">
                                     <Label text="Revision" />
