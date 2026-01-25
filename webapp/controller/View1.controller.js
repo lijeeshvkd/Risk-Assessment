@@ -2,8 +2,9 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/export/Spreadsheet",
     "sap/m/MessageBox",
-    "com/ehs/zehssaftyv2/model/formatter"
-], (Controller, Spreadsheet, MessageBox, Formatter) => {
+    "com/ehs/zehssaftyv2/model/formatter",
+    "sap/m/Dialog"
+], (Controller, Spreadsheet, MessageBox, Formatter, Dialog) => {
     "use strict";
 
     return Controller.extend("com.ehs.zehssaftyv2.controller.View1", {
@@ -26,8 +27,43 @@ sap.ui.define([
                         StatusText: "Closed"
                     }
                 ],
-                aStatusFilters: []
+                aStatusFilters: [],
+                images: {
+                    sevirity: "",
+                    PersonsEffected: "",
+                    Risk: "",
+                    State: ""
+                }
             });
+
+            //HIRA
+            var sSevirityImage = sap.ui.require.toUrl("com/ehs/zehssaftyv2/Images/HIRA/Sevirity_Likelihood.png"); 
+            var sPersonsEffectedImage = sap.ui.require.toUrl("com/ehs/zehssaftyv2/Images/HIRA/PersonsEffected.png"); 
+            var sRiskImage = sap.ui.require.toUrl("com/ehs/zehssaftyv2/Images/HIRA/Risk.png");
+            var sStateImage = sap.ui.require.toUrl("com/ehs/zehssaftyv2/Images/HIRA/State.png");
+
+            //ASPECT
+            var sAspectImact = sap.ui.require.toUrl("com/ehs/zehssaftyv2/Images/ASPECT/AspectImact.png");
+
+            //JHA
+            var sLevelDesc = sap.ui.require.toUrl("com/ehs/zehssaftyv2/Images/JHA/LevelDesc.png");
+            var sLevels = sap.ui.require.toUrl("com/ehs/zehssaftyv2/Images/JHA/Levels.png");
+            var sLikelihoodTable = sap.ui.require.toUrl("com/ehs/zehssaftyv2/Images/JHA/LikelihoodTable.png");
+            var sRiskFactor = sap.ui.require.toUrl("com/ehs/zehssaftyv2/Images/JHA/RiskFactor.png");
+            var sSeverityTable = sap.ui.require.toUrl("com/ehs/zehssaftyv2/Images/JHA/SeverityTable.png");
+
+            oViewModel.setProperty("/images/sevirity", sSevirityImage);
+            oViewModel.setProperty("/images/PersonsEffected", sPersonsEffectedImage);
+            oViewModel.setProperty("/images/Risk", sRiskImage);
+            oViewModel.setProperty("/images/State", sStateImage);
+
+            oViewModel.setProperty("/images/AspectImact", sAspectImact);
+
+            oViewModel.setProperty("/images/levelDesc", sLevelDesc);
+            oViewModel.setProperty("/images/levels", sLevels);
+            oViewModel.setProperty("/images/likelihoodTable", sLikelihoodTable);
+            oViewModel.setProperty("/images/riskFactor", sRiskFactor);
+            oViewModel.setProperty("/images/severityTable", sSeverityTable);
             this.getView().setModel(oViewModel, "viewModel");
         },
 
@@ -110,7 +146,8 @@ sap.ui.define([
                 aFilters.push(oStatusFilter);
             }
 
-            if (aFilters.length && (!oFilterFieldsFilled.Risk || !oFilterFieldsFilled.LocationDesc)) {
+            // if (aFilters.length && (!oFilterFieldsFilled.Risk || !oFilterFieldsFilled.LocationDesc)) {
+            if (aFilters.length && oFilterFieldsFilled.Risk) {
                 oTable.bindRows({
                     path: "RiskService>/RiskSafeySet",
                     filters: aFilters,
@@ -119,7 +156,7 @@ sap.ui.define([
                     }
                 });
             } else {
-                MessageBox.error("Please select either a Risk ID or a Location to apply the filter");
+                MessageBox.error("Please select a Risk Assesment ID to apply the filter");
             }
         },
 
@@ -135,6 +172,10 @@ sap.ui.define([
             var oSource = oEvant.getSource();
             var filterItems = oSource.getFilterGroupItems();
             var aFilters = [];
+
+            var oFilterFieldsFilled = {
+                Risk: false
+            };
 
             filterItems.forEach(function (oFilterGroupItem) {
                 var oControl = oSource.determineControlByFilterItem(oFilterGroupItem); // safer way
@@ -166,6 +207,7 @@ sap.ui.define([
                 }
 
                 if (aFilterValues.length > 0) {
+                    oFilterFieldsFilled[oFilterGroupItem.getName()] = true;
                     // Create filters for each token value and combine with OR
                     var aTokenFilters = aFilterValues.map(function (sVal) {
                         return new sap.ui.model.Filter(
@@ -181,14 +223,17 @@ sap.ui.define([
                 }
             });
 
-            oTable.bindRows({
-                path: "RiskService>/ZASPECT_IMPACTSet",
-                filters: aFilters,
-                parameters: {
-                    // Optional: Add OData parameters like $expand, $select, etc.
-                }
-            });
-
+            if (aFilters.length && oFilterFieldsFilled.Risk) {
+                oTable.bindRows({
+                    path: "RiskService>/ZASPECT_IMPACTSet",
+                    filters: aFilters,
+                    parameters: {
+                        // Optional: Add OData parameters like $expand, $select, etc.
+                    }
+                });
+            } else {
+                MessageBox.error("Please select a Risk Assesment ID to apply the filter");
+            }
         },
 
         onChangeRisk: function (oEvant) {
@@ -413,12 +458,10 @@ sap.ui.define([
 
         onLocKeyRefValueHelp02: function () {
             if (!this._oLocation02) {
-                if (!this._oLocation02) {
-                    this._oLocation02 = sap.ui.xmlfragment("com.ehs.zehssaftyv2.view.Location02", this);
-                    this.getView().addDependent(this._oLocation02);
-                }
-                this._oLocation02.open();
+                this._oLocation02 = sap.ui.xmlfragment("com.ehs.zehssaftyv2.view.Location02", this);
+                this.getView().addDependent(this._oLocation02);
             }
+            this._oLocation02.open();
         },
 
         onSearch04: function (oEvent) {
@@ -489,7 +532,7 @@ sap.ui.define([
 
             var aColumns = [
                 { label: "Item No", property: "Id", type: "string", width: 10, alignment: "Center" },
-                { label: "Item/Hazard", property: "Hazard", type: "string", width: 20, alignment: "Left" },
+                { label: "Item/Hazard", property: ["Hazard", "HazardDec"], template: "{0}, {1}", type: "string", width: 20, alignment: "Left" },
                 { label: "Hazard Description", property: "HazardDec", type: "string", width: 25, alignment: "Left" },
                 // { label: "Status", property: "Status", type: "string", width: 10, alignment: "Center" },
                 { label: "Risk", property: "RiskDesc", type: "string", width: 10, alignment: "Center" },
@@ -567,8 +610,18 @@ sap.ui.define([
             }).finally(() => {
                 oSpreadsheet.destroy();
             });
+        },
+
+        onRefrenceChartPress: function(oEvant) {
+            if (!this._oRefChartDialog) {
+                this._oRefChartDialog = sap.ui.xmlfragment("com.ehs.zehssaftyv2.view.RefChartDialog", this);
+                this.getView().addDependent(this._oRefChartDialog);
+            }
+            this._oRefChartDialog.open();
+        },
+
+        onCloseRefChart: function() {
+            this._oRefChartDialog.close();
         }
-
-
     });
 });

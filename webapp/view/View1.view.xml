@@ -8,17 +8,16 @@
     xmlns:op="sap.uxap"
     xmlns:table="sap.ui.table"
     height="100%"
-    displayBlock="true"
->
+    displayBlock="true" >
     <op:ObjectPageLayout
         id="objectPage"
         showFooter="false"
-        showHeaderContent="false"
+        showHeaderContent="true"
+        alwaysShowContentHeader="true"
+        preserveHeaderStateOnScroll="true"
         useIconTabBar="true"
         upperCaseAnchorBar="false"
-        height="100%"
-        enableLazyLoading="true"
-        preserveHeaderStateOnScroll="false">
+        enableLazyLoading="true">
         <op:headerTitle>
             <op:ObjectPageDynamicHeaderTitle>
                 <op:expandedHeading>
@@ -31,11 +30,21 @@
             <!-- TAB 1: HIRA (becomes IconTabFilter automatically) -->
             <op:ObjectPageSection id="sectionSafety" title="HIRA" importance="High">
                 <op:subSections>
+                    <!-- Refrence Charts -->
+                    <op:ObjectPageSubSection importance="Low">
+                        <HBox>
+                            <Image width="35rem" height="5rem" src="{viewModel>/images/sevirity}"></Image>
+                            <Image width="20rem" height="5rem" src="{viewModel>/images/PersonsEffected}"></Image>
+                            <Image width="10rem" height="5rem" src="{viewModel>/images/Risk}"></Image>
+                            <Image width="8rem" height="5rem" src="{viewModel>/images/State}"></Image>
+                        </HBox>
+                    </op:ObjectPageSubSection>
+
                     <!-- Filter SubSection -->
                     <op:ObjectPageSubSection importance="Low">
                         <fb:FilterBar id="filterbar01" useToolbar="true" search="onMainSearch01" showFilterConfiguration="false" >
                             <fb:filterGroupItems>
-                                <fb:FilterGroupItem name="Risk" label="Risk Assessment ID" groupName="Group1" visibleInFilterBar="true" >
+                                <fb:FilterGroupItem name="Risk" mandatory="true" label="Risk Assessment ID" groupName="Group1" visibleInFilterBar="true" >
                                     <fb:control>
                                         <MultiInput
                                             id="idRiskId01"
@@ -47,7 +56,7 @@
                                     </fb:control>
                                 </fb:FilterGroupItem>
 
-                                <fb:FilterGroupItem
+                                <!-- <fb:FilterGroupItem
                                     name="LocationDesc"
                                     label="Location"
                                     groupName="Group1"
@@ -62,7 +71,7 @@
                                             change="onChangeLocation01"
                                         />
                                     </fb:control>
-                                </fb:FilterGroupItem>
+                                </fb:FilterGroupItem> -->
 
                                 <!-- <fb:FilterGroupItem name="Status" label="Status" groupName="Group1" visibleInFilterBar="true" >
                                     <fb:control>
@@ -83,12 +92,12 @@
 
                     <!-- Table SubSection -->
                     <op:ObjectPageSubSection importance="High">
-                        <table:Table id="table01" 
+                        <table:Table id="table01"
+                            fixedColumnCount="1"
+                            enableBusyIndicator="true" 
                             selectionMode="None" 
-                            width="100%" 
-                            fixedColumnCount="0" 
-                            enableSelectAll="false" 
-                            class="sapUiResponsiveMargin"
+                            width="100%"
+                            enableSelectAll="false"
                             filter="onHiraColumnFilter" >
                             <table:extension>
                                 <OverflowToolbar>
@@ -217,7 +226,7 @@
                                     <table:template>
                                         <Text text="{RiskService>IssueDate}" />
                                     </table:template>
-                                </table:Column>
+                                </table:Column> -->
 
                                 <table:Column width="180px" sortProperty="Prepared" filterProperty="Prepared">
                                     <Label text="Prepared By" />
@@ -238,13 +247,13 @@
                                     <table:template>
                                         <Text text="{RiskService>AcceptedBy}" />
                                     </table:template>
-                                </table:Column> -->
+                                </table:Column>
 
                                 <table:Column width="300px" sortProperty="RevisionDescr" filterProperty="RevisionDescr">
                                     <Label text="Revision" />
                                     <table:template>
                                         <VBox>
-                                            <Text text="{RiskService>RevisionDescr}" />
+                                            <Text text="{RiskService>RevisionId}" />
                                         </VBox>
                                     </table:template>
                                 </table:Column>
@@ -258,19 +267,27 @@
             <!-- TAB 2: Environmental Aspect And Impact -->
             <op:ObjectPageSection id="sectionEnv" title="Aspect And Impact" importance="High">
                 <op:subSections>
+                    <!-- Refrence Charts -->
+                    <op:ObjectPageSubSection importance="Low">
+                        <HBox>
+                            <Image width="50rem" height="15rem" src="{viewModel>/images/AspectImact}"></Image>
+                        </HBox>
+                    </op:ObjectPageSubSection>
+
                     <!-- Filter SubSection -->
                     <op:ObjectPageSubSection importance="Low">
                         <fb:FilterBar id="filterbar02" useToolbar="true" search="onMainSearch02" showFilterConfiguration="false">
                             <fb:filterGroupItems>
                                 <fb:FilterGroupItem
-                                    name="RiskId"
+                                    name="Risk"
+                                    mandatory="true"
                                     label="Risk Assessment ID"
                                     groupName="Group2"
                                     visibleInFilterBar="true" >
                                     <fb:control>
                                         <MultiInput
                                             id="idRiskId02"
-                                            name="RiskId"
+                                            name="Risk"
                                             showValueHelp="true"
                                             valueHelpRequest="onRiskIdValueHelp02"
                                             placeholder="Select Risk Assessment ID"
@@ -278,12 +295,11 @@
                                         />
                                     </fb:control>
                                 </fb:FilterGroupItem>
-                                <fb:FilterGroupItem
+                                <!-- <fb:FilterGroupItem
                                     name="LocKeyRef"
                                     label="Location"
                                     groupName="Group2"
-                                    visibleInFilterBar="true"
-                                >
+                                    visibleInFilterBar="true" >
                                     <fb:control>
                                         <MultiInput
                                             id="idLocation02"
@@ -291,10 +307,9 @@
                                             showValueHelp="true"
                                             valueHelpRequest="onLocKeyRefValueHelp02"
                                             placeholder="Select Location"
-                                            change="onChangeLocation"
-                                        />
+                                            change="onChangeLocation" />
                                     </fb:control>
-                                </fb:FilterGroupItem>
+                                </fb:FilterGroupItem> -->
                             </fb:filterGroupItems>
                         </fb:FilterBar>
                     </op:ObjectPageSubSection>
@@ -302,10 +317,10 @@
                     <!-- Table SubSection -->
                     <op:ObjectPageSubSection importance="High">
                         <table:Table
+                            fixedColumnCount="1"
+                            enableBusyIndicator="true"
                             id="table02"
                             selectionMode="None"
-                            width="100%"
-                            fixedColumnCount="0"
                             class="sapUiResponsiveMargin" >
                             <table:extension>
                                 <OverflowToolbar>
@@ -317,6 +332,13 @@
                             </table:extension>
 
                             <table:columns>
+                                <table:Column width="180px" sortProperty="Risk" filterProperty="Risk">
+                                    <Label text="Risk Assessment ID" />
+                                    <table:template>
+                                        <Text text="{RiskService>Risk}" />
+                                    </table:template>
+                                </table:Column>
+
                                 <table:Column width="200px" sortProperty="Activity" filterProperty="Activity" >
                                     <Label text="Activity/Aspect" />
                                     <table:template>
@@ -324,12 +346,12 @@
                                     </table:template>
                                 </table:Column>
 
-                                <!-- <table:Column width="180px" sortProperty="Hazard" filterProperty="Hazard" >
+                                <table:Column width="180px" sortProperty="Hazard" filterProperty="Hazard" >
                                     <Label text="Hazard/Source Of Impact" />
                                     <table:template>
                                         <Text text="{RiskService>Hazard}" />
                                     </table:template>
-                                </table:Column> -->
+                                </table:Column>
 
                                 <table:Column width="300px" sortProperty="Impact" filterProperty="Impact">
                                     <Label text="Impact" />
@@ -355,7 +377,8 @@
                                 <table:Column width="7rem" sortProperty="RiskRating" filterProperty="RiskRating" >
                                     <Label text="Risk Rating" />
                                     <table:template>
-                                        <Text text="{RiskService>RiskRating}" />
+                                        <ObjectStatus text="{path: 'RiskService>RiskRating', formatter: '.formatter.formatRiskLevel' }" 
+                                            state="{path: 'RiskService>RiskRating', formatter: '.formatter.formatAspectRiskLevelState'}" />
                                     </table:template>
                                 </table:Column>
 
@@ -383,10 +406,143 @@
                                 <table:Column width="400px" sortProperty="PcLikehood" filterProperty="PcRiskRating">
                                     <Label text="Post Risk Rating" />
                                     <table:template>
-                                        <Text text="{RiskService>PcRiskRating}" />
+                                        <ObjectStatus text="{path: 'RiskService>PcRiskRating', formatter: '.formatter.formatRiskLevel' }" 
+                                            state="{path: 'RiskService>PcRiskRating', formatter: '.formatter.formatAspectRiskLevelState'}" />
                                     </table:template>
                                 </table:Column>
                                 
+                            </table:columns>
+                        </table:Table>
+                    </op:ObjectPageSubSection>
+                </op:subSections>
+            </op:ObjectPageSection>
+
+            <!-- TAB 3: JHA -->
+            <op:ObjectPageSection id="sectionJHA" title="JHA" importance="High">
+                <op:subSections>
+                    <!-- Refrence Charts -->
+                    <op:ObjectPageSubSection importance="Low">
+                        <HBox>
+                            <Image width="20rem" height="10rem" src="{viewModel>/images/riskFactor}" class="sapUiTinyMarginEnd"></Image>
+                            <Image width="20rem" height="10rem" src="{viewModel>/images/levelDesc}" class="sapUiTinyMarginEnd"></Image>
+                            <Image width="10rem" height="10rem" src="{viewModel>/images/levels}"></Image>
+                        </HBox>
+                    </op:ObjectPageSubSection>
+
+                    <!-- Filter SubSection -->
+                    <op:ObjectPageSubSection importance="Low">
+                        <fb:FilterBar id="filterbar03" useToolbar="true" search="onMainSearch03" showFilterConfiguration="false">
+                            <fb:filterGroupItems>
+                                <fb:FilterGroupItem
+                                    name="Risk"
+                                    mandatory="true"
+                                    label="Risk Assessment ID"
+                                    groupName="Group3"
+                                    visibleInFilterBar="true" >
+                                    <fb:control>
+                                        <MultiInput id="idRiskId03" name="Risk" showValueHelp="true" valueHelpRequest="onRiskIdValueHelp03"
+                                            placeholder="Select Risk Assessment ID"
+                                            change="onChangeRisk" />
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+                            </fb:filterGroupItems>
+                        </fb:FilterBar>
+                    </op:ObjectPageSubSection>
+
+                    <!-- Table SubSection -->
+                    <op:ObjectPageSubSection importance="High">
+                        <table:Table
+                            fixedColumnCount="1"
+                            enableBusyIndicator="true"
+                            id="table03"
+                            selectionMode="None"
+                            class="sapUiResponsiveMargin" >
+                            <table:extension>
+                                <OverflowToolbar>
+                                    <Title text="JHA" level="H2" />
+                                    <ToolbarSpacer />
+                                    <Button text="Table Chart" press=".onRefrenceChartPress" />
+                                    <Button icon="sap-icon://excel-attachment" text="Export to Excel" press=".onExportExcel03" />
+
+                                </OverflowToolbar>
+                            </table:extension>
+                            <table:columns>
+                                <table:Column width="9rem" sortProperty="Risk" filterProperty="Risk">
+                                    <Label text="Risk Assessment ID" />
+                                    <table:template>
+                                        <Text text="{RiskService>Risk}" />
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="180px" sortProperty="Risk" filterProperty="Risk">
+                                    <Label text="Activity" />
+                                    <table:template>
+                                        <Text text="{RiskService>Risk}" />
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="180px" sortProperty="Risk" filterProperty="Risk">
+                                    <Label text="Hazard" />
+                                    <table:template>
+                                        <Text text="{RiskService>Risk}" />
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="180px" sortProperty="Risk" filterProperty="Risk">
+                                    <Label text="Consequence" />
+                                    <table:template>
+                                        <Text text="{RiskService>Risk}" />
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="180px" sortProperty="Risk" filterProperty="Risk">
+                                    <Label text="Likelihood" />
+                                    <table:template>
+                                        <Text text="{RiskService>Risk}" />
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="180px" sortProperty="Risk" filterProperty="Risk">
+                                    <Label text="Severity" />
+                                    <table:template>
+                                        <Text text="{RiskService>Risk}" />
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="180px" sortProperty="Risk" filterProperty="Risk">
+                                    <Label text="Risk Level" />
+                                    <table:template>
+                                        <Text text="{RiskService>Risk}" />
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="180px" sortProperty="Risk" filterProperty="Risk">
+                                    <Label text="Control" />
+                                    <table:template>
+                                        <Text text="{RiskService>Risk}" />
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="180px" sortProperty="Risk" filterProperty="Risk">
+                                    <Label text="Post Likelihood" />
+                                    <table:template>
+                                        <Text text="{RiskService>Risk}" />
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="180px" sortProperty="Risk" filterProperty="Risk">
+                                    <Label text="Post Severity" />
+                                    <table:template>
+                                        <Text text="{RiskService>Risk}" />
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="180px" sortProperty="Risk" filterProperty="Risk">
+                                    <Label text="Post Risk Level" />
+                                    <table:template>
+                                        <Text text="{RiskService>Risk}" />
+                                    </table:template>
+                                </table:Column>
                             </table:columns>
                         </table:Table>
                     </op:ObjectPageSubSection>
