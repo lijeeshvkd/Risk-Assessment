@@ -1,21 +1,15 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
   <Dialog
-    id="selectDialog03"
+    id="JHARiskVHDlg"
     title="Select Items"
     draggable="true"
     resizable="true"
-    afterClose="onDialogAfterClose03"
-  >
+    afterClose="onDialogAfterClose03" >
+
     <VBox>
-      <CheckBox text="Select All" select="onAspectRiskSelectAll" />
-      <SearchField
-        id="searchField03"
-        liveChange="onSearch03"
-        placeholder="Search..." />
-      <List
-        id="itemList02"
-        mode="MultiSelect"  
-        growing="true"
+      <CheckBox text="Select All" select="onJHARiskSelectAll" />
+      <SearchField id="JHARiskVHSearch" liveChange="onSearch03" placeholder="Search..." />
+      <List id="JHARiskVHList" mode="MultiSelect" growing="true"
         items="{
           path: '/ZEHS_I_RISK_ID',
           filters: [
@@ -23,13 +17,13 @@
           ]
         }"
         selectionChange="onSelectionChange03" >
-        <StandardListItem title="{id}" />
+        <StandardListItem title="{id} - {title}" />
       </List>
     </VBox>
 
     <buttons>
-      <Button text="Cancel" press="onCancel03" />
-      <Button text="OK" press="onConfirm03" />
+      <Button text="Cancel" press="onRiskCancel03" />
+      <Button text="OK" press="onJHARiskConfirm" />
     </buttons>
   </Dialog>
 </core:FragmentDefinition>

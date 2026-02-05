@@ -1,0 +1,16 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+  <Dialog id="locationDialoge" title="Select Items" draggable="true" resizable="true" afterClose="onDialogAfterClose03" >
+    <VBox>
+      <SearchField id="locationVHSearch" liveChange="onLocationSearchLiveChange" placeholder="Search..." />
+      <List id="locationVHList" 
+        mode="MultiSelect"  
+        growing="true" >
+      </List>
+    </VBox>
+
+    <buttons>
+      <Button text="Cancel" press="onLocationVHCancel" />
+      <Button text="OK" press="onLocationVHConfirm" />
+    </buttons>
+  </Dialog>
+</core:FragmentDefinition>
