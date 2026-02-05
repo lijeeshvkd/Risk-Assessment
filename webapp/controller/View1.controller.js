@@ -65,6 +65,8 @@ sap.ui.define([
             oViewModel.setProperty("/images/riskFactor", sRiskFactor);
             oViewModel.setProperty("/images/severityTable", sSeverityTable);
             this.getView().setModel(oViewModel, "viewModel");
+
+            this.aLocationFilter = [];
         },
 
         handleStatusSelectionChange: function(oEvent) {
@@ -236,6 +238,76 @@ sap.ui.define([
             }
         },
 
+        onMainSearch03: function (oEvant) {
+            var oTable = this.getView().byId("table03");
+            oTable.setBusy(false);
+            var oSource = oEvant.getSource();
+            var filterItems = oSource.getFilterGroupItems();
+            var aFilters = [];
+
+            var oFilterFieldsFilled = {
+                Risk: false
+            };
+
+            filterItems.forEach(function (oFilterGroupItem) {
+                var oControl = oSource.determineControlByFilterItem(oFilterGroupItem); // safer way
+                var aTokens = [];
+                var aFilterValues = [];
+
+                if (oControl) {
+                    if (oControl.getTokens) {
+                        // For token-based controls like MultiInput
+                        aTokens = oControl.getTokens();
+                        if (aTokens.length) {
+                            aTokens.forEach(function (oToken) {
+                                var sTokenText = oToken.getKey() || oToken.getText();
+                                if (sTokenText) {
+                                    aFilterValues.push(sTokenText);
+                                }
+                            });
+                        } else if(oControl.getValue()) {
+                            aFilterValues.push(oControl.getValue());
+                        }
+
+                    } else if (oControl.getValue) {
+                        // For simple input controls
+                        var sValue = oControl.getValue();
+                        if (sValue) {
+                            aFilterValues.push(sValue);
+                        }
+                    }
+                }
+
+                if (aFilterValues.length > 0) {
+                    oFilterFieldsFilled[oFilterGroupItem.getName()] = true;
+                    // Create filters for each token value and combine with OR
+                    var aTokenFilters = aFilterValues.map(function (sVal) {
+                        return new sap.ui.model.Filter(
+                            oFilterGroupItem.getName(),
+                            sap.ui.model.FilterOperator.EQ,
+                            sVal
+                        );
+                    });
+
+                    // Combine tokens filters with OR operator because any token match should qualify
+                    var oCombinedFilter = new sap.ui.model.Filter(aTokenFilters, false);
+                    aFilters.push(oCombinedFilter);
+                }
+            });
+
+            if (aFilters.length && oFilterFieldsFilled.Risk) {
+                oTable.bindRows({
+                    path: "RiskService>/JhaSafetySet",
+                    filters: aFilters,
+                    parameters: {
+                        // Optional: Add OData parameters like $expand, $select, etc.
+                    }
+                });
+            } else {
+                MessageBox.error("Please select a Risk Assesment ID to apply the filter");
+            }
+        },
+
         onChangeRisk: function (oEvant) {
             var oTable = this.getView().byId("table02");
             oTable.setBusy(true);
@@ -277,6 +349,15 @@ sap.ui.define([
 
         onAspectRiskSelectAll: function(oEvent) {
             var oList = sap.ui.getCore().byId("itemList02");
+            if (oEvent.getParameter("selected")) {
+                oList.selectAll();
+            } else {
+                oList.removeSelections();
+            }
+        },
+
+        onJHARiskSelectAll: function(oEvent) {
+            var oList = sap.ui.getCore().byId("itemList03");
             if (oEvent.getParameter("selected")) {
                 oList.selectAll();
             } else {
@@ -406,9 +487,36 @@ sap.ui.define([
             }
         },
 
+        onRiskIdValueHelp03: function () {
+            if (!this._oRiskid03) {
+                this._oRiskid03 = sap.ui.xmlfragment("com.ehs.zehssaftyv2.view.RiskId03", this);
+                this.getView().addDependent(this._oRiskid03);
+            }
+            var oList = sap.ui.getCore().byId("JHARiskVHList");
+            if (this.aLocationFilter.length) {
+                var aFilters = [], oLocationFilter = {};
+                for (var i = 0; i < this.aLocationFilter.length; i++) {
+                    aFilters.push(new sap.ui.model.Filter('text',sap.ui.model.FilterOperator.EQ, this.aLocationFilter[i]));
+                }
+                oLocationFilter = new sap.ui.model.Filter({filters: aFilters, and: false});
+                var oFilter = new sap.ui.model.Filter({
+                    filters: [
+                        oLocationFilter,
+                        new sap.ui.model.Filter('type',sap.ui.model.FilterOperator.EQ, 'JHA')
+                    ],
+                    and: true,
+                });
+                oList.getBinding("items").filter(oFilter, sap.ui.model.FilterType.Application);
+            } else {
+                oList.getBinding("items").filter(new sap.ui.model.Filter('type',sap.ui.model.FilterOperator.EQ, 'JHA'), sap.ui.model.FilterType.Application);
+            }
+
+            this._oRiskid03.open();
+        },
+
         onSearch03: function (oEvent) {
             var sQuery = oEvent.getParameter("newValue");
-            var oList = sap.ui.getCore().byId("itemList03");
+            var oList = sap.ui.getCore().byId("JHARiskVHList");
             if (oList) {
                 var oBinding = oList.getBinding("items");
                 var aFilters = [];
@@ -420,6 +528,40 @@ sap.ui.define([
                 }
                 oBinding.filter(aFilters);
             }
+        },
+
+        onJHARiskConfirm: function () {
+            var oList = sap.ui.getCore().byId("itemList03");
+            if (oList) {
+                var aSelectedItems = oList.getSelectedItems();
+                var aTokens = [];
+                var aSelectedData = aSelectedItems.map(function (oItem) {
+                    var oContext = oItem.getBindingContext();
+                    var sId = oContext.getProperty("id");
+
+                    // Create a Token for each selected item
+                    var oToken = new sap.m.Token({
+                        key: sId,
+                        text: sId
+                    });
+                    aTokens.push(oToken);
+                });
+
+                var oMultiInput = this.getView().byId("idRiskId03");
+                oMultiInput.removeAllTokens();
+                oMultiInput.setTokens(aTokens);
+            }
+
+            this._oRiskid03.close();
+            this._oRiskid03.destroy();
+            this._oRiskid03 = null;
+        },
+
+        onRiskCancel03: function () {
+            //this.byId("selectDialog").close();
+            this._oRiskid03.close();
+            this._oRiskid03.destroy();
+            this._oRiskid03 = null;
         },
 
         onConfirm03: function () {
@@ -512,6 +654,89 @@ sap.ui.define([
             this._oLocation02.close();
             this._oLocation02.destroy();
             this._oLocation02 = null;
+        },
+
+        onLocationValueHelp: function () {
+            if (!this._locationVH) {
+                this._locationVH = sap.ui.xmlfragment("com.ehs.zehssaftyv2.view.fragments.LocationVH", this);
+                this.getView().addDependent(this._locationVH);
+
+                var oList = sap.ui.getCore().byId("locationVHList");
+                oList.bindAggregation("items", {
+                    path: "/ZEHS_I_LOC_REF",
+                    template: new sap.m.StandardListItem({
+                        title: "{text}"
+                    })
+                });
+            }
+            this._locationVH.open();
+        },
+
+        onLocationSearchLiveChange: function(oEvent) {
+            var sQuery = oEvent.getParameter("newValue");
+            var oList = sap.ui.getCore().byId("locationVHList");
+            if (oList) {
+                var oBinding = oList.getBinding("items");
+                var aFilters = [];
+
+                if (sQuery && sQuery.length > 0) {
+                    aFilters.push(new sap.ui.model.Filter([
+                        new sap.ui.model.Filter("text", sap.ui.model.FilterOperator.Contains, sQuery)
+                    ], false)); // OR filter
+                }
+                oBinding.filter(aFilters);
+            }
+        },
+
+        onLocationVHConfirm: function() {
+            this.aLocationFilter = [];
+            var oLocationList = sap.ui.getCore().byId("locationVHList");
+            var aLocationFilters = [];
+            if (oLocationList) {
+                var aSelectedItems = oLocationList.getSelectedItems();
+                var aTokens = [];
+                var aFilters = [];
+                aSelectedItems.map(function (oItem) {
+                    var oContext = oItem.getBindingContext();
+                    var sText = oContext.getProperty("text");
+
+                    // Risk ID Filter Array for selected locations
+                    aLocationFilters.push(sText);
+
+                    // Create a Token for each selected item
+                    var oToken = new sap.m.Token({
+                        key: sText,
+                        text: sText
+                    });
+                    aTokens.push(oToken);
+                });
+                this.aLocationFilter = aLocationFilters;
+                var oMultiInput = this.getView().byId("idJHALocationMultiInpt");
+                oMultiInput.removeAllTokens();
+                oMultiInput.setTokens(aTokens);
+            }
+
+            // var oRiskIDVHList = sap.ui.getCore().byId("itemList03");
+            // var oTypeFilter = new sap.ui.model.Filter('type',sap.ui.model.FilterOperator.EQ, 'JHA');
+            // oRiskIDVHList.getBinding("items").filter(aFilters);
+
+            
+            this._locationVH.close();
+            this._locationVH.destroy();
+            this._locationVH = null;
+        },
+
+        onLocationVHCancel: function() {
+            this._locationVH.close();
+            this._locationVH.destroy();
+            this._locationVH = null;
+        },
+
+        onJHALocationTokenUpdate: function(oEvant) {
+            var aRemovedTokens = oEvant.getParameter("removedTokens");
+            aRemovedTokens.forEach(function(token){
+                this.aLocationFilter = this.aLocationFilter.filter(text => text !== token.getText());
+            }.bind(this));
         },
 
         // Assuming your table is bound to /AspectImpactSet data in JSONModel or ODataModel

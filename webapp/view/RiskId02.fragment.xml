@@ -23,7 +23,7 @@
           ]
         }"
         selectionChange="onSelectionChange02" >
-        <StandardListItem title="{id}" />
+        <StandardListItem title="{id} - {title}" />
       </List>
     </VBox>
 
